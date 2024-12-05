@@ -1,6 +1,11 @@
 source('TC_MCMC.R')
 
-tcombat_harm = function(MCMCres, Y, Scan = Scan, X = NULL, Subj = NULL, burn.in = .5, long = F, covar = T, H = 5) {
+tcombat_harmonize = function(Y, Scan = Scan, X = NULL, Subj = NULL, R = 5, H = 5, mcmc_iter = 1000, burn.in = .5, long = F, covar = T, verbose = T) {
+  p = dim(Y)[-1]
+  if (verbose) print('Running MCMC...')
+  MCMCres = runMCMC_harm_long_R(Yvec = Yvec, p = p, X_cov = X, Scanner_ID = Scan, Subj_ID = Subj, 
+                                niter = mcmc_iter, R = R, H = H, prog_count = 10, show_all_steps = F, null_subj = is.null(Subj), null_cov = !covar)
+  
   nobs = nrow(Y)
   V = ncol(Y)
   na_vox = apply(Y,2,anyNA)
@@ -82,5 +87,4 @@ tcombat_harm = function(MCMCres, Y, Scan = Scan, X = NULL, Subj = NULL, burn.in 
     Harm = t(sapply(1:nobs, function(n) (Y[n,] - PopInt_agg - ScanDev[Scan[n],] - SubjInt[Subj[n],] - t(X[n,]%*%CovEff))/sqrt(ScanResidVarDev[Scan[n],]) + PopInt_agg + SubjInt[Subj[n],] + t(X[n,]%*%CovEff)))
   }
   return(Harm)
-  #return(list(Harm=Harm, PopInt=PopInt, ScanInt=ScanDev, CovEff=CovEff, SubjInt=ifelse(long==T,SubjInt,NULL)))
 }
