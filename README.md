@@ -5,3 +5,5 @@ Relevant files with Tensor-ComBat functions are:
   **TC_MCMC.R** (MCMC Call with Rcpp),
   **TC_MCMC_c.cpp** (C++ functions to MCMC sampling),
   **TC_Harmonize.R** (Harmonization of 2D or 3D images, given group ids, and options for covariate control and longitudinal modeling) 
+
+Note: Missing scripts for registration, cortical thickness extraction, and data reformat
